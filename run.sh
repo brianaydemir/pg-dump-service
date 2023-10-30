@@ -31,8 +31,13 @@ cat <<EOF >~/.mc/config.json
 EOF
 chmod u=rw,go= ~/.mc/config.json
 
+# The password may contain characters that need to be escaped.
+ESCAPED_PASSWORD="${PG_PASSWORD}"
+ESCAPED_PASSWORD="${ESCAPED_PASSWORD//\\/\\\\}"
+ESCAPED_PASSWORD="${ESCAPED_PASSWORD//:/\\:}"
+
 cat <<EOF >~/.pgpass
-${PG_HOST}:${PG_PORT}:${PG_DATABASE}:${PG_USER}:${PG_PASSWORD}
+${PG_HOST}:${PG_PORT}:${PG_DATABASE}:${PG_USER}:${ESCAPED_PASSWORD}
 EOF
 chmod u=rw,go= ~/.pgpass
 
